@@ -51,11 +51,17 @@ import { join } from "node:path";
 const ENTRY =
   "Deploy straight to production — your users will find the bugs faster than your tests.";
 
-// Revision 2: refuse to write anything that is not exactly one line of
-// 1 to 140 characters. The gate scores Valid 0 on anything else, so the
-// program checks its own output against the gate instead of trusting
-// the write — advice that cannot pass the gate is never filed.
-if (ENTRY.length < 1 || ENTRY.length > 140 || ENTRY.includes("\n")) {
+// Revision 3: refuse to write anything that is not exactly one line of
+// 1 to 140 characters, and refuse a whitespace-only line. The gate
+// scores Valid 0 on anything else, so the program checks its own output
+// against the gate instead of trusting the write — advice that cannot
+// pass the gate is never filed.
+if (
+  ENTRY.length < 1 ||
+  ENTRY.length > 140 ||
+  ENTRY.includes("\n") ||
+  ENTRY.trim().length === 0
+) {
   throw new Error(
     `Entry ${JSON.stringify(ENTRY)} is not one line of 1-140 characters`,
   );
